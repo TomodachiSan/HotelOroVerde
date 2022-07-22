@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b60cff2-6b5e-4448-a370-51be894e33c4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idreserva" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     concat(persona.`apaterno`,' ',persona.`amaterno`,' ',persona.`nombre`) AS persona_apaterno,
+     persona.`num_documento` AS persona_num_documento,
+     persona.`direccion` AS persona_direccion,
+     pago.`fecha_emision` AS pago_fecha_emision,
+     reserva.`costo_alojamiento` AS reserva_costo_alojamiento,
+     reserva.`fecha_ingresa` as ingreso,reserva.`fecha_salida` as salida,'1' as cantservicio,'ALOJAMIENTO' as servicio
+FROM
+     `persona` persona INNER JOIN `cliente` cliente ON persona.`idpersona` = cliente.`idpersona`
+     INNER JOIN `reserva` reserva ON cliente.`idpersona` = reserva.`idcliente`
+     INNER JOIN `habitacion` habitacion ON reserva.`idhabitacion` = habitacion.`idhabitacion`
+     INNER JOIN `pago` pago ON reserva.`idreserva` = pago.`idreserva`
+     where reserva.`idreserva`=$P{idreserva}]]>
+	</queryString>
+	<field name="persona_apaterno" class="java.lang.String"/>
+	<field name="persona_num_documento" class="java.lang.String"/>
+	<field name="persona_direccion" class="java.lang.String"/>
+	<field name="pago_fecha_emision" class="java.sql.Date"/>
+	<field name="reserva_costo_alojamiento" class="java.math.BigDecimal"/>
+	<field name="cantservicio" class="java.lang.String"/>
+	<field name="servicio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="55" splitType="Stretch">
+			<textField>
+				<reportElement x="68" y="0" width="165" height="20" uuid="b851a9b4-970e-4a82-a5f7-7066e6a58648"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{persona_apaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="26" width="165" height="20" uuid="0eb2c9c1-9a75-4f99-bd29-b51b19e74f7f"/>
+				<textFieldExpression><![CDATA[$F{persona_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="0" width="111" height="20" uuid="8e944c51-aab0-489d-b2a1-759b57994dea"/>
+				<textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{persona_num_documento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="429" y="26" width="110" height="20" uuid="7a151bbc-9152-40f7-8195-77641a27ad20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pago_fecha_emision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="111" splitType="Stretch">
+			<textField>
+				<reportElement x="7" y="9" width="73" height="20" uuid="d99e0d00-f46b-4a6c-8af3-6981639681de"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantservicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="9" width="232" height="20" uuid="1a7e8744-c66e-428d-b0e7-35b1148fb488"/>
+				<textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="9" width="78" height="20" uuid="1c65ae44-1574-4ac3-b8a5-b5e5b49f722a"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="461" y="9" width="78" height="20" uuid="560d2b11-7b91-4a1f-be83-a9188c9194ff"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="461" y="11" width="78" height="20" uuid="1a0cdf93-2d45-49d2-b008-cc135ef8af9a"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

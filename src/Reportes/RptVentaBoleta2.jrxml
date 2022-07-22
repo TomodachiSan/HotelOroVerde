@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+		<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="47"/>
+        <parameter name="idreserva" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     concat(persona.`apaterno`,' ',persona.`amaterno`,' ',persona.`nombre`) AS persona_apaterno,
+     persona.`num_documento` AS persona_num_documento,
+     persona.`direccion` AS persona_direccion,
+     pago.`fecha_emision` AS pago_fecha_emision,
+     reserva.`costo_alojamiento` AS reserva_costo_alojamiento,
+     reserva.`fecha_ingresa` as ingreso,reserva.`fecha_salida` as salida,'1' as cantservicio,'ALOJAMIENTO' as servicio
+FROM
+     `persona` persona INNER JOIN `cliente` cliente ON persona.`idpersona` = cliente.`idpersona`
+     INNER JOIN `reserva` reserva ON cliente.`idpersona` = reserva.`idcliente`
+     INNER JOIN `habitacion` habitacion ON reserva.`idhabitacion` = habitacion.`idhabitacion`
+     INNER JOIN `pago` pago ON reserva.`idreserva` = pago.`idreserva`
+     where reserva.`idreserva`=$P{idreserva}
+     ]]>
+	</queryString>
+	<field name="persona_apaterno" class="java.lang.String"/>
+	<field name="persona_num_documento" class="java.lang.String"/>
+	<field name="persona_direccion" class="java.lang.String"/>
+	<field name="pago_fecha_emision" class="java.sql.Date"/>
+	<field name="reserva_costo_alojamiento" class="java.math.BigDecimal"/>
+        <field name="cantservicio" class="java.lang.String"/>
+        <field name="servicio" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="55" splitType="Stretch">
+			<textField>
+				<reportElement x="68" y="0" width="165" height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{persona_apaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="68" y="26" width="165" height="20"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{persona_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="428" y="0" width="111" height="20"/>
+                                <textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{persona_num_documento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="429" y="26" width="110" height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{pago_fecha_emision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="111" splitType="Stretch">
+			<textField>
+				<reportElement x="7" y="9" width="73"  height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cantservicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="9" width="232" height="20"/>
+                                <textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="9" width="78" height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="461" y="9" width="78" height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="461" y="11" width="78" height="20"/>
+                                <textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{reserva_costo_alojamiento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
